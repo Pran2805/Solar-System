@@ -2,7 +2,6 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 const scene = new THREE.Scene();
-// Mesh initialization
 const cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
 const cubeMaterial = new THREE.MeshBasicMaterial({ color: "burlywood" });
 const cubeMesh = new THREE.Mesh(
@@ -12,8 +11,6 @@ const cubeMesh = new THREE.Mesh(
 
 scene.add(cubeMesh);
 
-
-// camera initialization
 const camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.1, 1000);
 
 // const aspectRatio = window.innerWidth / window.innerHeight
@@ -23,19 +20,20 @@ scene.add(camera);
 
 const canvas = document.querySelector("#canvas");
 
-// renderer initialization
-const renderer = new THREE.WebGLRenderer({ canvas });
-
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+const maxPixelRatio = Math.min(window.devicePixelRatio, 2)
+renderer.setPixelRatio(maxPixelRatio)
 const controls = new OrbitControls(camera, renderer.domElement);
 
 window.addEventListener('resize', () => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix()
+  renderer.setSize(window.innerWidth, window.innerHeight);
 })
 
 function animate() {
   controls.update()
-  renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.render(scene, camera);
   window.requestAnimationFrame(animate)
 }
