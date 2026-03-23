@@ -1,17 +1,25 @@
 import * as THREE from 'three';
 
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
-const renderer = new THREE.WebGLRenderer();
-renderer.setSize( window.innerWidth, window.innerHeight );
+// Mesh initialization
+const cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
+const cubeMaterial = new THREE.MeshBasicMaterial({ color: "red" });
+const cubeMesh = new THREE.Mesh(
+  cubeGeometry,
+  cubeMaterial
+);
 
-const geometry = new THREE.BoxGeometry( 1, 1, 1 );
-const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-const cube = new THREE.Mesh( geometry, material );
-scene.add( cube );
+scene.add(cubeMesh);
 
+// camera initialization
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 camera.position.z = 5;
+scene.add(camera);
 
-renderer.render( scene, camera );
-document.body.appendChild( renderer.domElement );
+const canvas = document.querySelector("#canvas");
+
+// renderer initialization
+const renderer = new THREE.WebGLRenderer({canvas});
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.render(scene, camera);
